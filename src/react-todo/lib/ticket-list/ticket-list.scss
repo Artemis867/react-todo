@@ -1,3 +1,29 @@
 .ticket-list-container {
-  min-width: 300px;
+
+  .task-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+
+    & > div {
+      flex-grow: 3;
+      padding: 3px;
+    }
+
+    .todo-task-container,
+    .in-progess-container,
+    .done-container {
+      max-width: 326px;
+      height: 100%;
+      background-color: red;
+
+      & > .ticket {
+        width: 100%;
+        height: 60px;
+        border: 1px solid #9999;
+        margin-bottom: 2px;
+      }
+    }
+  }
 }

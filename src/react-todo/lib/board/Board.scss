@@ -17,17 +17,4 @@
       text-align: center;
     }
   }
-
-  .task-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    margin-top: 5px;
-
-    & > div {
-      flex-grow: 3;
-      margin: 1px;
-      padding: 3px;
-    }
-  }
 }

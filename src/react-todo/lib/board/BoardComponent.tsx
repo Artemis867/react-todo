@@ -1,10 +1,10 @@
 import React from "react";
 import { sections } from "../../config/sections";
 import { BoardProps, BoardState } from "../../interface/board.interface";
-import MockTicketData from "../../mock/ticket.mock";
 import TicketListComponent from "../ticket-list/TicketListComponent";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
-const mockTicketData$ = {ticketData: MockTicketData};
 function BoardComponent() {
   return(
     <>
@@ -16,17 +16,9 @@ function BoardComponent() {
             .map((res, i)=> <div className="board-section" key={i}>{res.name}</div>)
           }
         </div>
-        <div className="task-container">
-          <div className="todo-task-container">
-            <TicketListComponent mockTicket={mockTicketData$}/>
-          </div>
-          <div className="in-progess-container">
-            <TicketListComponent mockTicket={[]}/>
-          </div>
-          <div className="done-container">
-            <TicketListComponent mockTicket={[]}/>
-          </div>
-        </div>
+        <DndProvider backend={HTML5Backend}>
+          <TicketListComponent/>
+        </DndProvider>
       </div>
     </>
   )
