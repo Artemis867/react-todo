@@ -10,23 +10,38 @@ const ItemTypes = {
 const store = createStore(TicketReducer, MockTicketData);
 function TicketReducer(state: any, action: any) {
   switch(action.type) {
-    case 'MOVE_TICKET':
+    case 'MOVE_TICKET_TODO':
       return state
       .map((res: any) => {
-        res['status'] = 'in progress';
+        if(res['ticketId'] === action.payload.id) {
+          res['status'] = 'todo';
+        }
         return res;
       });
-    break;
+    case 'MOVE_TICKET_IN_PROGRESS':
+        return state
+        .map((res: any) => {
+          if(res['ticketId'] === action.payload.id) {
+            res['status'] = 'in progress';
+          }
+          return res;
+        });
     default:
       return state;
   }
 }
 
 
-function DraggableTicket({id, ticketName}: any) {
+function DroppableBoard() {
+  return(
+    <></>
+  );
+}
+
+function DraggableTicket({id, ticketName, status}: any) {
   const [{isDragging}, drag ] = useDrag(() => ({
     type: ItemTypes.TICKET,
-    item: {id},
+    item: {id, status},
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -48,21 +63,37 @@ function DraggableTicket({id, ticketName}: any) {
 }
 
 function MoveTicket(fetch: any): void {
-  store.dispatch({
-    type: 'MOVE_TICKET',
-    payload: {fetch},
-  });
-  console.log(store.getState());
+  console.log('fetch: ', fetch);
+  fetch.status = 'in progress';
+  switch(fetch.status) {
+    case 'todo':
+      store.dispatch({
+        type: 'MOVE_TICKET_TODO',
+        payload: fetch,
+      });
+    break;
+    case 'in progress':
+      store.dispatch({
+        type: 'MOVE_TICKET_IN_PROGRESS',
+        payload: fetch,
+      });
+    break;
+    default:
+      return;
+  }
+  
 }
 
 function TicketListComponent(): any {
   const TicketList = store.getState();
-
-  console.log('ticket list: ');
-  console.log(TicketList);
   const [{isOver}, drop] = useDrop(() => ({
     accept: ItemTypes.TICKET,
-    drop: (ticketId) => MoveTicket(ticketId),
+    drop: (ticketId, monitor) => {
+      console.log('drop result: ');
+      console.log(monitor.getDropResult());
+
+      MoveTicket(ticketId)
+    },
     collect: monitor => ({
       isOver: !!monitor.isOver()
     })
@@ -79,7 +110,12 @@ function TicketListComponent(): any {
             .filter((ticket:any) => ticket.status == 'todo')
             .map((ticketTemplate: any) => {
               return(
-                <DraggableTicket key={ticketTemplate.id} id={ticketTemplate.id} ticketName={ticketTemplate.name}/>
+                <DraggableTicket
+                  key={ticketTemplate.ticketId}
+                  id={ticketTemplate.ticketId}
+                  status={ticketTemplate.status}
+                  ticketName={ticketTemplate.name}
+                />
               );
             })
           }
