@@ -8,8 +8,7 @@ In the project directory, you can run:
 
 ### `npm start`
 
-### `npm test`
-no unit test created yet
+### `npm test` to be applied
 
 ### `npm run build`
 ### `npm run eject`
