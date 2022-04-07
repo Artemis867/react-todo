@@ -8,7 +8,7 @@ const MockTicketData = [
   },
   {
     ticketId: 2,
-    name: 'Implement Apollo Graphql',
+    name: 'Implement DND',
     type: 'coding',
     status: 'todo',
     description: '',

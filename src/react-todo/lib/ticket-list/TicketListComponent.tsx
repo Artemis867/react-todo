@@ -8,33 +8,78 @@ const ItemTypes = {
   TICKET: 'ticket',
 }
 const store = createStore(TicketReducer, MockTicketData);
+const TicketList = store.getState();
 function TicketReducer(state: any, action: any) {
+  const newState = [...state];
   switch(action.type) {
     case 'MOVE_TICKET_TODO':
-      return state
+      newState
       .map((res: any) => {
         if(res['ticketId'] === action.payload.id) {
           res['status'] = 'todo';
         }
         return res;
       });
+      return newState;
+    break;
     case 'MOVE_TICKET_IN_PROGRESS':
-        return state
-        .map((res: any) => {
-          if(res['ticketId'] === action.payload.id) {
-            res['status'] = 'in progress';
-          }
-          return res;
-        });
+      newState
+      .map((res: any) => {
+        if(res['ticketId'] === action.payload.id) {
+          res['status'] = 'in progress';
+        }
+        return res;
+      });
+      return newState;
     default:
       return state;
   }
 }
 
 
-function DroppableBoard() {
+function DroppableBoard({templateClass, boardType, list}: any) {
+  const [{isOver, didDrop}, drop] = useDrop(() => ({
+    accept: ItemTypes.TICKET,
+    drop: (ticketId) => {
+      MoveTicket(ticketId, boardType)
+    },
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+      didDrop: monitor.didDrop()
+    })
+  }),[boardType]);
+
+  if(didDrop) {
+    console.info('task moved', didDrop);
+  }
   return(
-    <></>
+    <div
+      className={`${templateClass}`}
+      ref={drop}
+    >
+      <TicketListTemplate ticketList={list} boardType={boardType}/>
+    </div>
+  );
+}
+
+function TicketListTemplate({ticketList, boardType}: any) {
+  return(
+    <>
+    {
+      ticketList
+        .filter((ticket: any) => ticket.status === boardType)
+        .map((ticketTemplate: any) => {
+          return(
+            <DraggableTicket
+              key={ticketTemplate.ticketId}
+              id={ticketTemplate.ticketId}
+              status={ticketTemplate.status}
+              ticketName={ticketTemplate.name}
+            />
+          )
+        })
+    }
+    </>
   );
 }
 
@@ -62,10 +107,8 @@ function DraggableTicket({id, ticketName, status}: any) {
   );
 }
 
-function MoveTicket(fetch: any): void {
-  console.log('fetch: ', fetch);
-  fetch.status = 'in progress';
-  switch(fetch.status) {
+function MoveTicket(fetch: any, status: any): void {
+  switch(status) {
     case 'todo':
       store.dispatch({
         type: 'MOVE_TICKET_TODO',
@@ -81,61 +124,27 @@ function MoveTicket(fetch: any): void {
     default:
       return;
   }
-  
 }
 
 function TicketListComponent(): any {
   const TicketList = store.getState();
-  const [{isOver}, drop] = useDrop(() => ({
-    accept: ItemTypes.TICKET,
-    drop: (ticketId, monitor) => {
-      console.log('drop result: ');
-      console.log(monitor.getDropResult());
-
-      MoveTicket(ticketId)
-    },
-    collect: monitor => ({
-      isOver: !!monitor.isOver()
-    })
-  }));
-
   return(
     <>
-    { TicketList &&
       <div className="ticket-list-container">
         <div className="task-container">
-          <div className="todo-task-container">
-          {
-            TicketList
-            .filter((ticket:any) => ticket.status == 'todo')
-            .map((ticketTemplate: any) => {
-              return(
-                <DraggableTicket
-                  key={ticketTemplate.ticketId}
-                  id={ticketTemplate.ticketId}
-                  status={ticketTemplate.status}
-                  ticketName={ticketTemplate.name}
-                />
-              );
-            })
-          }
-          </div>
-          <div
-            className="in-progess-container"
-            ref={drop}
-          >
-            {
-              TicketList
-              .filter((ticket: any) => ticket.status === 'in progress')
-              .map((ticketTemplate: any) => <div key={ticketTemplate.ticketId} className="ticket">{ticketTemplate.name}</div>)
-            }
-          </div>
+          <DroppableBoard
+            templateClass={'todo-task-container'}
+            boardType={'todo'}
+            list={TicketList}/>
+          <DroppableBoard
+            templateClass={'in-progress-container'}
+            boardType={'in progress'}
+            list={TicketList}/>
           <div className="done-container">
             
           </div>
         </div>
       </div>
-    }
     </>
   );
 }
