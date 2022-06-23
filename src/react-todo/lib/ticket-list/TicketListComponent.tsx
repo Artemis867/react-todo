@@ -3,12 +3,12 @@ import { TicketListProps } from "../../interface/ticketList.interface";
 import MockTicketData from "../../mock/ticket.mock";
 import { useDrag, useDrop } from "react-dnd";
 import { createStore } from "redux";
+import { useEffect } from "react";
 
 const ItemTypes = {
   TICKET: 'ticket',
 }
 const store = createStore(TicketReducer, MockTicketData);
-const TicketList = store.getState();
 function TicketReducer(state: any, action: any) {
   const newState = [...state];
   switch(action.type) {
@@ -31,11 +31,14 @@ function TicketReducer(state: any, action: any) {
         return res;
       });
       return newState;
+    case 'ADD_TICKET':
+      console.log('[ACTION] add ticket: ', action.payload);
+      return [...newState, action.payload];
+    break;
     default:
       return state;
   }
 }
-
 
 function DroppableBoard({templateClass, boardType, list}: any) {
   const [{isOver, didDrop}, drop] = useDrop(() => ({
@@ -127,7 +130,11 @@ function MoveTicket(fetch: any, status: any): void {
 }
 
 function TicketListComponent(): any {
-  const TicketList = store.getState();
+  let TicketList = store.getState();
+  useEffect(() => {
+    console.log('trigger effect')
+  }, [TicketList])
+  console.log('[STORE] current state:', TicketList);
   return(
     <>
       <div className="ticket-list-container">
@@ -149,4 +156,4 @@ function TicketListComponent(): any {
   );
 }
 
-export default TicketListComponent;
+export { TicketListComponent, store };

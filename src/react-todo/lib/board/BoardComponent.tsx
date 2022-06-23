@@ -1,7 +1,7 @@
 import React from "react";
 import { sections } from "../../config/sections";
 import { BoardProps, BoardState } from "../../interface/board.interface";
-import TicketListComponent from "../ticket-list/TicketListComponent";
+import { TicketListComponent } from "../ticket-list/TicketListComponent";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
