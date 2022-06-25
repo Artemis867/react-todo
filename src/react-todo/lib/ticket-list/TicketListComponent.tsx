@@ -17,7 +17,7 @@ function TicketListComponent(): any {
   }, [TicketList]);
 
   function DroppableBoard({templateClass, boardType, list}: any) {
-    const [{isOver, didDrop}, drop] = useDrop(() => ({
+    const [{didDrop}, drop] = useDrop(() => ({
       accept: ItemTypes.TICKET,
       drop: (ticketId) => {
         MoveTicket(ticketId, boardType)
