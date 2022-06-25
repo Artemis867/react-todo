@@ -27,6 +27,7 @@ function FormComponent(): any {
       type: 'ADD_TICKET',
       payload: task
     });
+    setTask({...task, ticketId: Math.floor((Math.random() * 9999999) + 1)});
   }
 
   return(

@@ -1,6 +1,6 @@
 const MockTicketData = [
   {
-    ticketId: 1,
+    ticketId: generateId(),
     name: 'Implement Apollo Graphql',
     description: '',
     type: 'coding',
@@ -8,7 +8,7 @@ const MockTicketData = [
     priority: 2,
   },
   {
-    ticketId: 2,
+    ticketId: generateId(),
     name: 'Implement DND',
     description: '',
     type: 'coding',
@@ -16,7 +16,7 @@ const MockTicketData = [
     priority: 2,
   },
   {
-    ticketId: 3,
+    ticketId: generateId(),
     name: 'Advanced fetch (graphql)',
     description: '',
     type: 'coding',
@@ -24,7 +24,7 @@ const MockTicketData = [
     priority: 2,
   },
   {
-    ticketId: 4,
+    ticketId: generateId(),
     name: 'Code cleanup (angular)',
     description: '',
     type: 'coding',
@@ -32,7 +32,7 @@ const MockTicketData = [
     priority: 2,
   },
   {
-    ticketId: 5,
+    ticketId: generateId(),
     name: 'Study Postgres',
     description: '',
     type: 'research',
@@ -40,7 +40,7 @@ const MockTicketData = [
     priority: 2,
   },
   {
-    ticketId: 6,
+    ticketId: generateId(),
     name: 'Study SQL',
     description: 'learn to do advance SQL queries',
     type: 'research',
@@ -50,12 +50,16 @@ const MockTicketData = [
 ];
 
 const TicketState = {
-  ticketId: 7,
+  ticketId: generateId(),
   name: '',
   description: '',
   type: 'coding',
   status: 'todo',
   priority: 3,
 };
+
+function generateId() {
+  return Math.floor((Math.random() * 9999999) + 1);
+}
 
 export { MockTicketData, TicketState};
