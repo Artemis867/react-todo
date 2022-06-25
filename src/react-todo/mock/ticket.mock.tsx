@@ -49,4 +49,13 @@ const MockTicketData = [
   },
 ];
 
-export default MockTicketData;
+const TicketState = {
+  ticketId: 7,
+  name: '',
+  description: '',
+  type: 'coding',
+  status: 'todo',
+  priority: 3,
+};
+
+export { MockTicketData, TicketState};
