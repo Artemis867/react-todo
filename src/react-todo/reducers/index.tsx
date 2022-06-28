@@ -14,7 +14,6 @@ export function rootReducer(state: any, action: any) {
       });
     break;
     case 'MOVE_TICKET_IN_PROGRESS':
-
       return [...state].map(ticket => {
         if(ticket.ticketId == updateObj?.ticketId) {
           return {...updateObj, status: 'in progress'};
@@ -25,6 +24,11 @@ export function rootReducer(state: any, action: any) {
     case 'ADD_TICKET':
       console.log('[ACTION] add ticket: ', action.payload);
       return [...newState, action.payload];
+    break;
+    case 'DELETE_TICKET':
+      console.log('[ACTION] delete ticket: ', action.payload);
+      return [...state]
+      .filter(({ticketId}) => ticketId !== action.payload.id );
     break;
     default:
       return state;

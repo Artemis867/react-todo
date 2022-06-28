@@ -1,33 +1,58 @@
-import { useDrag } from "react-dnd";
-import { TicketProps, TicketState } from "../../interface/ticket.interface";
+import React from "react";
+import { useStore } from "react-redux";
 
-const ItemTypes = {
-  TICKET: 'ticket',
+interface Ticket {
+  ticketId: number,
+  name: string,
+  priority?: number,
+  description?: string
 }
 
-function TicketComponent(props: TicketProps) {
+const priorityList = [
+  {level: 1, value: 'High'},
+  {level: 2, value: 'Normal'},
+  {level: 3, value: 'Low'}
+];
 
-  const [{isDragging}, drag ] = useDrag(() => ({
-    type: ItemTypes.TICKET,
-    collect: monitor => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
+
+
+function TicketComponent({ticketId, name, description, priority}: Ticket ): any {
+  const mainStore = useStore();
+  const priorityLevel = priorityList.filter(({level}) => level == priority)
+  .shift()?.value;
+
+  function deleteTicket(event: React.FormEvent<EventTarget>): void {
+    console.log('[CLICKED] delete this ticket: ', ticketId);
+    mainStore.dispatch({
+      type: 'DELETE_TICKET',
+      payload: {
+        id: ticketId
+      }
+    });
+  }
 
   return(
     <>
-      <div 
-        className="ticket-container"
-        ref={drag}
-        style={{
-          opacity: isDragging ? 0.5 : 1,
-          cursor: 'move',
-        }}
-      >
-        <span>{props.ticketData.name}</span>
+    <div className="ticket-container">
+      {name && priority &&
+        <div>
+          <span>{name}</span>
+          <span className="priority">
+            {
+              <span>{priorityLevel}</span>
+            }
+          </span>
+
+        <span className="close" onClick={deleteTicket}>x</span>
+        </div>
+      }
+      <br />
+      <div>
+        {description}
       </div>
+    </div>
     </>
-  )
+  );
 }
 
 export default TicketComponent;

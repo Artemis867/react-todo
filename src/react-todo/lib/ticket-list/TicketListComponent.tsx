@@ -8,13 +8,20 @@ const ItemTypes = {
   TICKET: 'ticket',
 }
 
+interface Ticket {
+  ticketId: number,
+  name: string,
+  priority?: number,
+  description?: string
+}
+
 function TicketListComponent(): any {
   const store = useStore();
   let TicketList = useSelector(state => state);
 
-  useEffect(() => {
-    console.log('[RENDER] current state: ', TicketList);
-  }, [TicketList]);
+  // useEffect(() => {
+  //   console.log('[RENDER] current state: ', TicketList);
+  // }, [TicketList]);
 
   function DroppableBoard({templateClass, boardType, list}: any) {
     const [{didDrop}, drop] = useDrop(() => ({
@@ -26,11 +33,8 @@ function TicketListComponent(): any {
         isOver: !!monitor.isOver(),
         didDrop: monitor.didDrop()
       })
-    }),[boardType]);
-  
-    if(didDrop) {
-      console.info('task moved', didDrop);
-    }
+    }), [boardType]);
+
     return(
       <div
         className={`${templateClass}`}
@@ -53,7 +57,7 @@ function TicketListComponent(): any {
                 key={ticketTemplate.ticketId}
                 id={ticketTemplate.ticketId}
                 status={ticketTemplate.status}
-                ticketName={ticketTemplate.name}
+                ticket={ticketTemplate}
               />
             )
           })
@@ -61,8 +65,8 @@ function TicketListComponent(): any {
       </>
     );
   }
-  
-  function DraggableTicket({id, ticketName, status}: any) {
+
+  function DraggableTicket({id, ticket, status}: {id: number, status: string, ticket: Ticket}) {
     const [{isDragging}, drag ] = useDrag(() => ({
       type: ItemTypes.TICKET,
       item: {id, status},
@@ -81,7 +85,9 @@ function TicketListComponent(): any {
         }}
         className="ticket"
       >
-        {ticketName}
+        <TicketComponent
+         {...ticket}
+        ></TicketComponent>
       </div>
     );
   }
