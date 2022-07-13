@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useStore } from "react-redux";
 import { TicketState } from "../../mock/ticket.mock";
+import Select from 'react-select';
+
+const categories = [
+  { value: 1, label: 'research' },
+  { value: 2, label: 'coding' },
+  { value: 3, label: 'setup' },
+]
 
 function FormComponent(): any {  
   const [task, setTask] = useState(TicketState);
@@ -11,6 +18,10 @@ function FormComponent(): any {
 
   function handleNameChange(event: any) {
     setTask({...task, name: event.target.value});
+  }
+
+  function handleCategoryChange(selected: any) {
+    setTask({...task, category: selected})
   }
 
   function handleDescriptionChange(event: any) {
@@ -36,6 +47,16 @@ function FormComponent(): any {
         <form onSubmit={addTask}>
           <label>Task </label>
           <input type="text" value={task.name} onChange={handleNameChange}/>
+          <br/>
+          <label>Category </label>
+          <Select
+            name="category"
+            isMulti
+            options={categories}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            onChange={handleCategoryChange}
+          />
           <br/>
           <label htmlFor="">Description</label>
           <textarea value={task.description} onChange={handleDescriptionChange}></textarea>

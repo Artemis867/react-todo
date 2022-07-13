@@ -2,18 +2,43 @@
   position: relative;
   padding: 5px;
 
+  svg.close {
+    margin-top: 6px;
+    color: #4BB543;
+  }
   .close {
     position: absolute;
-    top: 0;
+    top: 2px;
     right: 10px;  
     color: #aaaaaa;
     cursor: pointer;
   }
+
   span.priority {
     margin-left: 7px;
     font-size: 11px;
-    border: 1px solid gray;
-    padding: 2px;
+    border: 1px solid #ababab;
+    padding: 2px 4px 2px 4px;
     border-radius: 5px;
+    color: #ffffff;
+  }
+
+  span.priority.High {
+    background: #e94a4a;
+  }
+
+  span.priority.Normal {
+    background: #4b8ddf;
+  }
+
+  span.priority.Low {
+    background: #ababab;
+  }
+
+  .fa-icon {
+    color:#9c9c9c;
+    font-size: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
   }
 }

@@ -7,12 +7,18 @@ import { useSelector, useStore } from "react-redux";
 const ItemTypes = {
   TICKET: 'ticket',
 }
+const availableStatus = [
+  {status: 'todo', action: 'MOVE_TICKET_TODO'},
+  {status: 'in progress', action: 'MOVE_TICKET_IN_PROGRESS'},
+  {status: 'done', action: 'MOVE_TICKET_DONE'},
+];
 
 interface Ticket {
   ticketId: number,
   name: string,
   priority?: number,
-  description?: string
+  description?: string,
+  status: string,
 }
 
 function TicketListComponent(): any {
@@ -27,7 +33,7 @@ function TicketListComponent(): any {
     const [{didDrop}, drop] = useDrop(() => ({
       accept: ItemTypes.TICKET,
       drop: (ticketId) => {
-        MoveTicket(ticketId, boardType)
+        MoveTicket(ticketId, boardType) 
       },
       collect: monitor => ({
         isOver: !!monitor.isOver(),
@@ -51,6 +57,12 @@ function TicketListComponent(): any {
       {
         ticketList
           .filter((ticket: any) => ticket.status === boardType)
+          .sort((a: any, b: any) => {
+            if(a.priority < b.priority) {
+              return -1;
+            }
+            return 1;
+          })
           .map((ticketTemplate: any) => {
             return(
               <DraggableTicket
@@ -91,25 +103,17 @@ function TicketListComponent(): any {
       </div>
     );
   }
-  
 
-  function MoveTicket(fetch: any, status: any): void {
-    switch(status) {
-      case 'todo':
-        store.dispatch({
-          type: 'MOVE_TICKET_TODO',
-          payload: fetch,
-        });
-      break;
-      case 'in progress':
-        store.dispatch({
-          type: 'MOVE_TICKET_IN_PROGRESS',
-          payload: fetch,
-        });
-      break;
-      default:
-        return;
-    }
+  function MoveTicket(fetch: any, targetStatus: any): void {
+
+    const actionObj = [...availableStatus]
+    .filter(({status}) => targetStatus === status).shift();
+
+    store.dispatch({
+      type: actionObj?.action,
+      payload: fetch,
+    });
+
   }
 
   return(
@@ -124,9 +128,10 @@ function TicketListComponent(): any {
             templateClass={'in-progress-container'}
             boardType={'in progress'}
             list={TicketList}/>
-          <div className="done-container">
-            
-          </div>
+          <DroppableBoard
+            templateClass={'done-container'}
+            boardType={'done'}
+            list={TicketList}/>
         </div>
       </div>
     </>
