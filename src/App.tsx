@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
+import './bootstrap.scss';
 import './App.scss';
 import NavigationComponent from './react-todo/component/nav/Navigation';
 import MainContentComponent from './react-todo/component/main-content/Main-content';

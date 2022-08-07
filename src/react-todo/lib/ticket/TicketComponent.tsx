@@ -37,12 +37,12 @@ function TicketComponent({ticketId, name, description, category, priority, statu
   return(
     <>
     <div className="ticket-container">
-      {name && priority &&
+      { name && priority &&
         <div>
           <span>{name}</span>
           <span className={`priority ${priorityLevel}`}>{priorityLevel}</span>
           <br />
-        {category &&
+        { category &&
           category.map(({value, label}: any, i) => {
             if(value === 1) {
               return <FontAwesomeIcon key={i} className="fa-icon" icon={faNoteSticky}/>

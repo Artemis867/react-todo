@@ -3,3 +3,26 @@
 @use '../react-todo/lib/ticket-list/ticket-list.scss';
 @use '../react-todo/lib/ticket/ticket.scss';
 @use '../react-todo/lib/form/form.scss';
+@use '../react-todo/lib/form/modal-form/modal-form.scss';
+
+.custom-btn {
+  background: none;
+  border: none;
+}
+.custom-btn:hover {
+  color: black;
+  background: none;
+}
+.custom-btn:focus {
+  color: black;
+  background: none;
+  box-shadow: none;
+}
+.custom-btn:active {
+  color: black;
+  background: none;
+  box-shadow: none;
+}
+.custom-btn:focus-visible {
+  border: none;
+}

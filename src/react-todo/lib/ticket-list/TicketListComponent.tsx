@@ -98,7 +98,7 @@ function TicketListComponent(): any {
         className="ticket"
       >
         <TicketComponent
-         {...ticket}
+         { ...ticket }
         ></TicketComponent>
       </div>
     );
@@ -113,7 +113,6 @@ function TicketListComponent(): any {
       type: actionObj?.action,
       payload: fetch,
     });
-
   }
 
   return(
