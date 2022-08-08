@@ -8,14 +8,18 @@
 
     & > div {
       flex-grow: 3;
-      padding: 3px;
+      padding: 0;
     }
 
     .todo-task-container,
     .in-progress-container,
     .done-container {
-      max-width: 326px;
+      max-width: 331px;
       min-height: 500px;
+      margin: 0;
+      padding: 0;
+      margin-left: 1px;
+      margin-right: 1px;
 
       & > .ticket {
         width: 100%;

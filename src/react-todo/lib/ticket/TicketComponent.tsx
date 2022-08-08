@@ -1,8 +1,9 @@
-import { faNoteSticky, faStickyNote } from "@fortawesome/free-regular-svg-icons";
-import { faBook, faCheckCircle, faCode, faTerminal } from "@fortawesome/free-solid-svg-icons";
+import { faNoteSticky } from "@fortawesome/free-regular-svg-icons";
+import { faCheckCircle, faCode, faTerminal } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useStore } from "react-redux";
+import ProgressIconComponent from "../progress-icon/ProgressIconComponent";
 
 interface Ticket {
   ticketId: number,
@@ -57,7 +58,7 @@ function TicketComponent({ticketId, name, description, category, priority, statu
         }
         { status === 'done' ?
           <FontAwesomeIcon className="close" icon={faCheckCircle}/> 
-          : <span className="close" onClick={deleteTicket}>x</span>
+          : <ProgressIconComponent status={status}/>
         }
         </div>
       }

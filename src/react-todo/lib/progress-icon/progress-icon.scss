@@ -1,0 +1,20 @@
+.progress-pip-container {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  height: 10px;
+  width: 30px;
+  .fa-progress-pip {
+    font-size: 5px;
+    margin: 0 1px 0 1px;
+    color: #ababab;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 2px;
+  right: 10px;  
+  color: #aaaaaa;
+  cursor: pointer;
+}
